@@ -13,7 +13,7 @@ pip install -r requirements.txt
 ```
 ## run code
 ```
-bash run_code.sh gpu_id maps_id alg_cfg other_cfg[optional]
+bash run_code.sh gpu_id maps alg other_cfg[optional]
 ```
 
 example
