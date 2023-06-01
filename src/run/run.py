@@ -17,8 +17,6 @@ from components.transforms import OneHot
 
 from smac.env import StarCraft2Env
 
-from modules.world_model import WorldModel
-import wandb
 from modules.action_model import Action_Model
 
 def get_agent_own_state_size(env_args):
@@ -34,23 +32,6 @@ def run(_run, _config, _log):
     args = SN(**_config)
     args.device = "cuda" if args.use_cuda else "cpu"
     
-    # wandb
-    if args.wandb_enabled:
-        wandb.init(
-            project="PYMARL2",
-            entity="junjunjun",
-            # dir=wandb_dir, 
-            name=str(args.seed),
-            group=args.env_args['map_name'], 
-            job_type = args.name + "_min_norm"*args.act_min_norm\
-                +"_min_var_norm"*args.act_min_var_norm\
-                +"_am_lr{}".format(args.am_lr)+"_am_belta{}".format(args.am_belta) +("_dcyT{}".format(args.am_decay_T)) * args.am_belta_decay,
-            
-            # sync_tensorboard=False
-            )
-        # run_name = args.logdir[args.logdir.rfind('/') + 1:]
-        # wandb.run.name = run_name
-        wandb.config.update(args)
 
     # setup loggers
     logger = Logger(_log, args)

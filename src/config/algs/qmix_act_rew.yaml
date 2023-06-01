@@ -45,7 +45,7 @@ per_beta: 0.4
 return_priority: False
 
 name: "qmix_act_rew"
-wandb_enabled: true
+
 am_lr: 0.000001
 am_belta: 1
 am_belta_decay: true

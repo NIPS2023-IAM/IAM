@@ -2,7 +2,6 @@ from collections import defaultdict
 import logging
 import numpy as np
 import torch as th
-import wandb
 
 
 class Logger:
@@ -52,13 +51,6 @@ class Logger:
             item = "{:.4f}".format(th.mean(th.tensor([float(x[1]) for x in self.stats[k][-window:]])))
             log_str += "{:<25}{:>8}".format(k + ":", item)
             log_str += "\n" if i % 4 == 0 else "\t"
-            
-            #! add wandb
-            if self.args.wandb_enabled:
-                wandb.log({
-                    "t_step":self.stats["episode"][-1][0],
-                    k:v[0][1]
-                    })
         self.console_logger.info(log_str)
         # Reset stats to avoid accumulating logs in memory
         self.stats = defaultdict(lambda: [])

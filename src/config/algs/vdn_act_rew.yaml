@@ -33,7 +33,7 @@ optimizer: 'adam'
 q_lambda: False
 
 name: "vdn_act_rew" 
-wandb_enabled: false
+
 am_lr: 0.000001
 am_belta: 1
 am_decay_T: 200000 # 200000

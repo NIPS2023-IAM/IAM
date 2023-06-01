@@ -10,7 +10,6 @@ from torch.optim import RMSprop, Adam
 import numpy as np
 from utils.th_utils import get_parameters_num
 import math as m
-import wandb 
 import torch.nn.functional as F
 
 class NQLearner_act_rew:
@@ -243,15 +242,6 @@ class NQLearner_act_rew:
             if self.args.env == "one_step_matrix_game":
                 print_matrix_status(batch, self.mixer, mac_out)
 
-            #* Logging [intrinsic reward] here: for debug
-            act_rew_episode_mean = sum(intr_rew_epi_ls) / len(intr_rew_epi_ls)
-            
-            if self.args.wandb_enabled:
-                wandb.log({
-                        "act_rew_episode_mean": act_rew_episode_mean,
-                        "am_loss": am_loss_mean/self.args.n_agents,
-                        "am_grad_norm": am_grad_norm_sum/self.args.n_agents,
-                        })
             
         # return info
         info = {}
@@ -318,28 +308,6 @@ class NQLearner_act_rew:
             
             # calculate intrinsic rewards
             intr_rew[:,:,i] = (-pred_losses.sum(2)/ nonzero_obs_count).detach()
-        
-        # if args.intr_rew_sqrt_norm:
-        #     intr_rew = 1 / m.sqrt((i_obs.shape[-1])) * intr_rew #! 这个归一化可能有点太大了，但是先这样吧，后面再改，先看看效果，后面实在不行改成sqrt(i_obs.shape[-1])，或者1
-        # elif args.intr_rew_sqrt_mean_norm:
-        #     intr_rew = 1 / m.sqrt((i_obs.shape[-1])) * intr_rew
-        #     intr_rew_mean = np.repeat(np.expand_dims(intr_rew.mean(-1),-1),intr_rew.shape[-1], axis=-1)
-        #     intr_rew = intr_rew - intr_rew_mean
-        # elif args.intr_rew_sqrt_min_norm:
-        #     intr_rew = 1 / m.sqrt((i_obs.shape[-1])) * intr_rew
-        #     intr_rew_min = np.repeat(np.expand_dims(intr_rew.min(-1),-1),intr_rew.shape[-1], axis=-1)
-        #     intr_rew = intr_rew - intr_rew_min
-        # elif args.intr_rew_mean_norm:
-        #     intr_rew = 1 / (i_obs.shape[-1]) * intr_rew
-        #     intr_rew_mean = np.repeat(np.expand_dims(intr_rew.mean(-1),-1),intr_rew.shape[-1], axis=-1)
-        #     intr_rew = intr_rew - intr_rew_mean
-        # elif args.intr_rew_min_norm:
-        #     intr_rew = 1 / (i_obs.shape[-1]) * intr_rew
-        #     intr_rew_min = np.repeat(np.expand_dims(intr_rew.min(-1),-1),intr_rew.shape[-1], axis=-1)
-        #     intr_rew = intr_rew - intr_rew_min    
-        # else:
-        #     intr_rew = 1 / (i_obs.shape[-1]) * intr_rew
-        # print("end of calculate intrinsic rewards.")
         
         return intr_rew # shape: (batch_size, max_seq_len, num_agents)
     
