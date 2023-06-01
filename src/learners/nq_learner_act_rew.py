@@ -119,12 +119,11 @@ class NQLearner_act_rew:
             target_max_qvals = self.target_mixer(target_max_qvals, batch["state"])
         
         
-        #! add vdn_intr_rew, qmix_intr_rew learning here
+        #! add vdn_intr_rew, qmix_intr_rew 
         #* VDN_intr_rew
         if self.args.mixer == "vdn":
             # Mixer
             chosen_action_qvals_mixer = self.mixer(chosen_action_qvals, batch["state"][:, :-1])
-            
             
             # Optimise
             self.optimiser.zero_grad()
@@ -242,7 +241,6 @@ class NQLearner_act_rew:
             if self.args.env == "one_step_matrix_game":
                 print_matrix_status(batch, self.mixer, mac_out)
 
-            
         # return info
         info = {}
         # calculate priority
@@ -277,14 +275,10 @@ class NQLearner_act_rew:
             # print("end of imagine_agent_j_obs")
             obs_n = th.cat(obs_j_list, 2)[:,:-1] # shape: (batch_size, max_seq_len, num_agents, obs_size)
             obs_size = th.cat(obs_j_list, 2).shape[-1]
-            # act_n = sampled_batch['actions'][:,:,i,:].unsqueeze(2).repeat(1,1,num_agents,1) # shape: (batch_size, max_seq_len, num_ag            
-            # inputs = th.cat([obs_n, act_n], 3).view(-1, self.world_models[i].state_shape+1).to(self.world_models[i].device) # shape: (batch_size*max_seq_len*num_agents, obs_size+1)
-            
             
             # get the prediction losses
             action_model = self.action_models[i]
             
-
             pred_Qs_n_i = []
             action_model.agent.cuda()
             action_model.init_hidden(sampled_batch.batch_size)
