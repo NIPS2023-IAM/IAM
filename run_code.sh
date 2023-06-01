@@ -1,7 +1,7 @@
 gpus=$1    # 0,1
 maps=$2    # MMM2, 3s5z
 alg=$3     # vdn
-args=$4    # rnd_belta=0.1
+args=$4    
 
 args=(${args//,/ })
 
