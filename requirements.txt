@@ -1,0 +1,14 @@
+absl_py==1.4.0
+cloudpickle==2.2.0
+gym==0.11.0
+matplotlib==3.5.3
+numpy==1.21.2
+pygame==2.1.2
+PySC2==4.0.0
+PyYAML==6.0
+s2clientprotocol==5.0.11.89720.0
+sacred==0.8.2
+SMAC==1.0.0
+tensorboard_logger==0.1.0
+torch==1.10.0
+
